@@ -12,7 +12,9 @@
 #' D-score and WD-score indicating interacting probabilities.
 
 #' @author Qingzhou Zhang, \email{zqzneptune@hotmail.com}
-#'
+#' @references Huttlin, Edward L., et al. "The BioPlex network: a systematic exploration of the human interactome." Cell 162.2 (2015): 425-440. \url{https://doi.org/10.1016/j.cell.2015.06.043}
+#' @references Huttlin, Edward L., et al. "Architecture of the human interactome defines protein communities and disease networks." Nature 545.7655 (2017): 505. \url{https://www.nature.com/articles/nature22366}
+
 #' @importFrom dplyr group_by
 #' @importFrom dplyr summarise
 #' @importFrom dplyr mutate

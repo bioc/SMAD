@@ -21,6 +21,11 @@ Implemented a naive Bayes classifier that learns to distinguish true
  identifications on the basis of CompPASS scores.
  The source code for this function was based on the source code. \url{https://github.com/dnusinow/cRomppass}
 }
+\references{
+Huttlin, Edward L., et al. "The BioPlex network: a systematic exploration of the human interactome." Cell 162.2 (2015): 425-440. \url{https://doi.org/10.1016/j.cell.2015.06.043}
+
+Huttlin, Edward L., et al. "Architecture of the human interactome defines protein communities and disease networks." Nature 545.7655 (2017): 505. \url{https://www.nature.com/articles/nature22366}
+}
 \author{
 Qingzhou Zhang, \email{zqzneptune@hotmail.com}
 }
