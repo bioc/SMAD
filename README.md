@@ -28,7 +28,12 @@ CompPASS(datInput)
 
 ### 2. CompPASS-Plus
 
-CompPASS-plus implements a naive Bayes classifier that learns to distinguish true interacting proteins from non-specific background and false positive identifications on the basis of CompPASS scores. This algorithm was implemented in developing BioPlex 1.0 [(Huttlin, Edward L., et al., 2015)](https://doi.org/10.1016/j.cell.2015.06.043) and BioPlex 2.0 [(Huttlin, Edward L., et al., 2017)](https://www.nature.com/articles/nature22366) This function was optimized from the [source code](https://github.com/dnusinow/cRomppass).
+On the basis of CompPASS, CompPASS-plus computes entropy and normalized 
+WD-score. In its implementation in BioPlex 1.0 [(Huttlin, Edward L., et al., 2015)](https://doi.org/10.1016/j.cell.2015.06.043) and 
+BioPlex 2.0 [(Huttlin, Edward L., et al., 2017)](https://www.nature.com/articles/nature22366), a naive 
+Bayes classifier that learns to distinguish true interacting proteins from 
+non-specific background and false positive identifications was included in the 
+compPASS pipline. This function was optimized from the [source code](https://github.com/dnusinow/cRomppass).
 
 Prepare input data into the dataframe *datInput* with the following format:
 
