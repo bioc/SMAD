@@ -1,4 +1,4 @@
-#' Test data for SMAD. 
+#' Test data for SMAD 
 #'
 #' \itemize{
 #'   \item idRun A unique identifier for one AP-MS run

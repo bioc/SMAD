@@ -3,7 +3,7 @@
 \docType{data}
 \name{TestDatInput}
 \alias{TestDatInput}
-\title{Test data for SMAD.}
+\title{Test data for SMAD}
 \format{A data frame with 26,441 rows and 5 variables}
 \usage{
 data(TestDatInput)

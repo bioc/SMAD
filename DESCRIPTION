@@ -25,4 +25,7 @@ Suggests:
     rmarkdown,
     testthat
 VignetteBuilder: knitr
-biocViews: MassSpectrometry, Proteomics, Software
+biocViews: 
+    MassSpectrometry, 
+    Proteomics,
+    Software
