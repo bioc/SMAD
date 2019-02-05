@@ -1,0 +1,11 @@
+# SMAD 0.1.0
+
+## New functions
+
+* Spoke model `CompPASS()` function.
+
+* Improved Spoke model `CompPASSplus()` function (recommended).
+
+* Matrix model `HG()` function.
+
+## Improved speed by Rcpp computing
