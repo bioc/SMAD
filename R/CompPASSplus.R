@@ -146,7 +146,9 @@ CompPASSplus <- function(datInput){
     
     # Weighted WD score
     WD_raw <-
-        output$WD_raw[!(is.nan(output$WD_raw) || is.na(output$WD_raw))]
+        output$WD_raw[!is.na(output$WD_raw)]
+    WD_raw <-
+        WD_raw[!is.nan(output$WD_raw)]
     WD_raw.factor <-
         unname(quantile(WD_raw, 0.98)[1])
     
