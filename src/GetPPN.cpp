@@ -13,6 +13,7 @@ using namespace Rcpp;
 //' Drosophila melanogaster." Cell 147.3 (2011): 690-703.
 //' \url{https://doi.org/10.1016/j.cell.2011.08.047}
 //' @examples
+//' mat <- matrix(c(3, 4, 5, 3, 4, 2), byrow = TRUE, ncol = 2)
 //' GetPPN(mat)
 //' 
 // [[Rcpp::export]]

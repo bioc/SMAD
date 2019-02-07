@@ -19,6 +19,7 @@ This function returns sum of minimum peptide/spectra count across AP-MS
 runs.
 }
 \examples{
+mat <- matrix(c(3, 4, 5, 3, 4, 2), byrow = TRUE, ncol = 2)
 GetPPN(mat)
 
 }
