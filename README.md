@@ -1,7 +1,5 @@
 # Statistical Modelling of AP-MS Data (SMAD)
 
-[![Build Status](https://travis-ci.org/zqzneptune/SMAD.svg?branch=master)](https://travis-ci.org/zqzneptune/SMAD)
-
 This R package implements statistical modelling of affinity purification–mass spectrometry (AP-MS) data to compute confidence scores to identify *bona fide* protein-protein interactions (PPI).
 
 ## Installation
