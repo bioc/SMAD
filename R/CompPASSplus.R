@@ -47,7 +47,7 @@ CompPASSplus <- function(datInput){
         missingCol <-
             setdiff(colInput, 
                     colnames(datInput)[match(colInput, colnames(datInput))])
-        stop(paste0("Input data missing: ", paste(missingCol, collapse = ", ")))
+        stop("Input data missing: ", paste(missingCol, collapse = ", "))
     }
     
     . <- NULL
