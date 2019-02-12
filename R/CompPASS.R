@@ -28,11 +28,25 @@
 #' @importFrom tidyr spread
 #' @importFrom magrittr %>%
 #' @importFrom stats quantile
-#' @importFrom stats sd
+#' @importFrom matrixStats rowSds
 #' @examples
 #' data(TestDatInput)
 #' CompPASS(TestDatInput)
 CompPASS <- function(datInput){
+    colInput <-
+        c("idRun", "idBait", "idPrey", "countPrey")
+    
+    if(!is.data.frame(datInput)){
+        stop("Input data should be data.frame")
+    }
+    
+    if(!all(colInput %in% colnames(datInput))){
+        missingCol <-
+            setdiff(colInput, 
+                    colnames(datInput)[match(colInput, colnames(datInput))])
+        stop(paste0("Input data missing: ", paste(missingCol, collapse = ", ")))
+    }
+    
     idBait <- NULL
     idPrey <- NULL
     countPrey <- NULL
@@ -56,7 +70,7 @@ CompPASS <- function(datInput){
         stats$idPrey
     statsTable[is.na(statsTable)] <- 0
     z <-
-        t(apply(statsTable, 1, function(x){(x-mean(x))/sd(x)}))
+        t(scale(t(statsTable), center = TRUE, scale = TRUE))
     zTable <-
         data.frame(`idBait` = unlist(lapply(colnames(z), function(x){
             rep(x, nrow(z))
@@ -67,9 +81,9 @@ CompPASS <- function(datInput){
         mutate(`BP` = paste(`idBait`, `idPrey`, sep = "~"))
     w <-
         data.frame(`idPrey` = rownames(statsTable),
-                            `Mtsc` = apply(statsTable, 1, mean),
-                            `Stsc` = apply(statsTable, 1, sd),
-                            stringsAsFactors = FALSE) %>%
+                    `Mtsc` = rowMeans(statsTable),
+                    `Stsc` = rowSds(statsTable),
+                    stringsAsFactors = FALSE) %>%
         mutate(`w` = ifelse(`Stsc`/`Mtsc` <=1, 1, `Stsc`/`Mtsc`))
     f <-
         unique(datInput[, c("idBait", "idPrey")]) %>%
@@ -82,15 +96,15 @@ CompPASS <- function(datInput){
         mutate(`BP` = paste(`idBait`, `idPrey`, sep = "~"))
     scoreTbl <-
         statsTbl %>%
-            left_join(., f, by = "idPrey") %>%
-            left_join(., p[, c("BP", "p")], by = "BP") %>%
-            left_join(., w, by = "idPrey") %>%
-            mutate(`k` = k) %>%
-            mutate(`scoreS` = sqrt((`AvePSM`)*(`k`)/(`f_sum`))) %>%
-            mutate(`scoreD` = sqrt((`AvePSM`)*(((`k`)/(`f_sum`))^`p`))) %>%
-            mutate(`WD_inner` = (`k` / `f_sum`) * (`Stsc` / `Mtsc`)) %>%
-            mutate(`scoreWD` = sqrt((`AvePSM`)*(((`k`)/(`f_sum`)*`w`)^`p`))) %>%
-            left_join(., zTable[, c("BP", "scoreZ")], by = "BP")
+        left_join(., f, by = "idPrey") %>%
+        left_join(., p[, c("BP", "p")], by = "BP") %>%
+        left_join(., w, by = "idPrey") %>%
+        mutate(`k` = k) %>%
+        mutate(`scoreS` = sqrt((`AvePSM`)*(`k`)/(`f_sum`))) %>%
+        mutate(`scoreD` = sqrt((`AvePSM`)*(((`k`)/(`f_sum`))^`p`))) %>%
+        mutate(`WD_inner` = (`k` / `f_sum`) * (`Stsc` / `Mtsc`)) %>%
+        mutate(`scoreWD` = sqrt((`AvePSM`)*(((`k`)/(`f_sum`)*`w`)^`p`))) %>%
+        left_join(., zTable[, c("BP", "scoreZ")], by = "BP")
     output <-
         as.data.frame(scoreTbl[, c("idBait", "idPrey",
                                     "AvePSM", "scoreZ",
