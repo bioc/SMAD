@@ -52,6 +52,25 @@ scoreCompPASS <- CompPASS(TestDatInput)
 head(scoreCompPASS)
 ```
 
+Based on the scores, bait-prey interactions could be ranked and ready for downstream analyses.
+
+```{r CompPASS output figure, echo=FALSE, fig.height=7, fig.width=7, message=FALSE, warning=FALSE, paged.print=FALSE}
+par(mfrow = c(2, 2))
+plot(sort(scoreCompPASS$scoreZ, decreasing = TRUE), pch = 16,
+     xlab = "Ranked bait-prey interactions",
+     ylab = "Z-score")
+plot(sort(scoreCompPASS$scoreS, decreasing = TRUE), pch = 16,
+     xlab = "Ranked bait-prey interactions",
+     ylab = "S-score")
+plot(sort(scoreCompPASS$scoreD, decreasing = TRUE), pch = 16,
+     xlab = "Ranked bait-prey interactions",
+     ylab = "D-score")
+plot(sort(scoreCompPASS$scoreWD, decreasing = TRUE), pch = 16,
+     xlab = "Ranked bait-prey interactions",
+     ylab = "WD-score")
+
+```
+
 
 ### 2. CompPASS-Plus
 
@@ -69,6 +88,15 @@ scoreCompPASSplus <- CompPASSplus(TestDatInput)
 head(scoreCompPASSplus)
 ```
 
+```{r CompPASSplus output figure, echo=FALSE, fig.height=7, fig.width=7, message=FALSE, warning=FALSE, paged.print=FALSE}
+
+plot(sort(scoreCompPASSplus$scoreWD, decreasing = TRUE), pch = 16,
+     xlab = "Ranked bait-prey interactions",
+     ylab = "CompPASS-plus WD-score")
+
+```
+
+
 ### 3. HGScore
 
 HGScore Scoring algorithm based on a hypergeometric distribution error model 
@@ -83,6 +111,17 @@ the additional column.
 scoreHG <- HG(TestDatInput)
 head(scoreHG)
 ```
+
+```{r HG output figure, echo=FALSE, fig.height=7, fig.width=7, message=FALSE, warning=FALSE, paged.print=FALSE}
+
+plot(sort(scoreHG$HG, decreasing = TRUE), pch = 16,
+     xlab = "Ranked prey-prey interactions",
+     ylab = "HGscore")
+
+```
+
+Noted that HG scoring implements matrix models which leads to significant increase of inferred protein-protein interactions.
+
 
 [1]: https://doi.org/10.1016/j.cell.2009.04.042
 [2]: http://besra.hms.harvard.edu/ipmsmsdbs/cgi-bin/tutorial.cgi
