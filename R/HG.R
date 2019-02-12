@@ -15,15 +15,15 @@
 #' negative log transformed Hypergeometric test P-values.
 #'
 #' @author Qingzhou Zhang, \email{zqzneptune@hotmail.com}
-#' @references Guruharsha, K. G., et al. "A protein complex network of 
-#' Drosophila melanogaster." Cell 147.3 (2011): 690-703.
+#' @references Guruharsha, K. G., et al. 'A protein complex network of 
+#' Drosophila melanogaster.' Cell 147.3 (2011): 690-703.
 #' \url{https://doi.org/10.1016/j.cell.2011.08.047}
 #' @references Hart, G. Traver, Insuk Lee, and Edward M. Marcotte. 
-#' "A high-accuracy consensus map of yeast protein complexes reveals modular 
-#' nature of gene essentiality." BMC bioinformatics 8.1 (2007): 236.
+#' 'A high-accuracy consensus map of yeast protein complexes reveals modular 
+#' nature of gene essentiality.' BMC bioinformatics 8.1 (2007): 236.
 #' \url{https://doi.org/10.1186/1471-2105-8-236}
-#' @references Zybailov, Boris, et al. "Statistical analysis of membrane 
-#' proteome expression changes in Saccharomyces c erevisiae." Journal of 
+#' @references Zybailov, Boris, et al. 'Statistical analysis of membrane 
+#' proteome expression changes in Saccharomyces c erevisiae.' Journal of 
 #' proteome research 5.9 (2006): 2339-2347.
 #' \url{https://doi.org/10.1021/pr060161n}
 
@@ -42,14 +42,29 @@
 #' @import Rcpp
 #' @importFrom Rcpp evalCpp
 #' @useDynLib SMAD
-#' @exportPattern "^[[:alpha:]]+"
+#' @exportPattern '^[[:alpha:]]+'
 #' @export
 #' @examples
 #' data(TestDatInput)
 #' HG(TestDatInput)
 
 
-HG <- function(datInput){
+HG <- function(datInput) {
+    colInput <-
+        c("idRun", "idPrey", "countPrey", "lenPrey")
+    
+    if(!is.data.frame(datInput)){
+        stop("Input data should be data.frame")
+    }
+    
+    if(!all(colInput %in% colnames(datInput))){
+        missingCol <-
+            setdiff(colInput, 
+                    colnames(datInput)[match(colInput, colnames(datInput))])
+        stop(paste0("Input data missing: ", paste(missingCol, collapse = ", ")))
+    }
+    
+    
     . <- NULL
     idRun <- NULL
     countPrey <- NULL
@@ -65,62 +80,54 @@ HG <- function(datInput){
     NMinTn <- NULL
     HG <- NULL
     ppiTN <- NULL
-    datCnt <-
-        datInput %>%
-        mutate(`NormalSpec` = `countPrey`/`lenPrey`) %>%
-        group_by(`idRun`) %>%
-        mutate(`SumNS` = sum(`NormalSpec`)) %>%
-        mutate(`NSAF` = `NormalSpec`/`SumNS`) %>%
-        group_by(`idRun`) %>%
-        mutate(`NormalNSAF` = `NSAF`/min(`NSAF`)) %>%
-        mutate(`Tn` = as.integer(sqrt(`NormalNSAF`)))
-    d <-
-        spread(datCnt[, c("idRun", "idPrey", "Tn")], `idRun`, `Tn`)
-    g <-
-        as.matrix(d[, -1])
+    datCnt <- 
+        datInput %>% 
+        mutate(NormalSpec = countPrey/lenPrey) %>% 
+        group_by(idRun) %>% 
+        mutate(SumNS = sum(NormalSpec)) %>% 
+        mutate(NSAF = NormalSpec/SumNS) %>% 
+        group_by(idRun) %>% 
+        mutate(NormalNSAF = NSAF/min(NSAF)) %>% 
+        mutate(Tn = as.integer(sqrt(NormalNSAF)))
+    d <- spread(datCnt[, c("idRun", "idPrey", "Tn")], 
+                idRun, Tn)
+    g <- as.matrix(d[, -1])
     g[is.na(g)] <- 0
-    rownames(g) <-
-        d$idPrey
-    pps <-
-        combn(d$idPrey, 2)
-    PPN <-
-        GetPPN(t(g))
-    CppPPN <-
-        PPN[lower.tri(PPN,diag = FALSE)]
-    datPPI <-
-        data.frame(cbind(t(pps[, CppPPN != 0]),
-                        CppPPN[CppPPN != 0]),
-                    stringsAsFactors = FALSE)
-    colnames(datPPI) <-
+    rownames(g) <- d$idPrey
+    pps <- combn(d$idPrey, 2)
+    PPN <- GetPPN(t(g))
+    CppPPN <- PPN[lower.tri(PPN, diag = FALSE)]
+    datPPI <- data.frame(cbind(t(pps[, CppPPN != 0]), 
+                                CppPPN[CppPPN != 0]), stringsAsFactors = FALSE)
+    colnames(datPPI) <- 
         c("InteractorA", "InteractorB", "ppiTN")
-    datPPI$ppiTN <-
+    datPPI$ppiTN <- 
         as.numeric(datPPI$ppiTN)
-    tnInteractorA <-
+    tnInteractorA <- 
         datPPI[, c("InteractorA", "ppiTN")]
-    colnames(tnInteractorA) <-
+    colnames(tnInteractorA) <- 
         c("UniprotID", "ppiTN")
-    tnInteractorB <-
+    tnInteractorB <- 
         datPPI[, c("InteractorB", "ppiTN")]
-    colnames(tnInteractorB) <-
+    colnames(tnInteractorB) <- 
         c("UniprotID", "ppiTN")
-    tnProtein <-
-        bind_rows(tnInteractorA, tnInteractorB) %>%
-        group_by(`UniprotID`) %>%
-        summarise(`minTn` = sum(`ppiTN`))
-    sumMinTnInteractorA <-
+    tnProtein <- 
+        bind_rows(tnInteractorA, tnInteractorB) %>% 
+        group_by(UniprotID) %>% summarise(minTn = sum(ppiTN))
+    sumMinTnInteractorA <- 
         tnProtein
-    colnames(sumMinTnInteractorA) <-
+    colnames(sumMinTnInteractorA) <- 
         c("InteractorA", "tnA")
-    sumMinTnInteractorB <-
+    sumMinTnInteractorB <- 
         tnProtein
-    colnames(sumMinTnInteractorB) <-
+    colnames(sumMinTnInteractorB) <- 
         c("InteractorB", "tnB")
-    scorePPI <-
-        datPPI %>%
-        left_join(., sumMinTnInteractorA, by = "InteractorA") %>%
-        left_join(., sumMinTnInteractorB, by = "InteractorB") %>%
-        mutate(`NMinTn` = sum(tnProtein$minTn)/2) %>%
-        mutate(`HG` = -phyper(`ppiTN`, `tnA`, `NMinTn`-`tnB`,`tnB`,
-                                lower.tail = FALSE, log.p = TRUE))
+    scorePPI <- 
+        datPPI %>% 
+        left_join(., sumMinTnInteractorA, by = "InteractorA") %>% 
+        left_join(., sumMinTnInteractorB, by = "InteractorB") %>% 
+        mutate(NMinTn = sum(tnProtein$minTn)/2) %>% 
+        mutate(HG = -phyper(ppiTN, tnA, NMinTn - tnB, 
+                                tnB, lower.tail = FALSE, log.p = TRUE))
     return(scorePPI[, c("InteractorA", "InteractorB", "HG")])
 }

@@ -29,17 +29,17 @@ data(TestDatInput)
 HG(TestDatInput)
 }
 \references{
-Guruharsha, K. G., et al. "A protein complex network of 
-Drosophila melanogaster." Cell 147.3 (2011): 690-703.
+Guruharsha, K. G., et al. 'A protein complex network of 
+Drosophila melanogaster.' Cell 147.3 (2011): 690-703.
 \url{https://doi.org/10.1016/j.cell.2011.08.047}
 
 Hart, G. Traver, Insuk Lee, and Edward M. Marcotte. 
-"A high-accuracy consensus map of yeast protein complexes reveals modular 
-nature of gene essentiality." BMC bioinformatics 8.1 (2007): 236.
+'A high-accuracy consensus map of yeast protein complexes reveals modular 
+nature of gene essentiality.' BMC bioinformatics 8.1 (2007): 236.
 \url{https://doi.org/10.1186/1471-2105-8-236}
 
-Zybailov, Boris, et al. "Statistical analysis of membrane 
-proteome expression changes in Saccharomyces c erevisiae." Journal of 
+Zybailov, Boris, et al. 'Statistical analysis of membrane 
+proteome expression changes in Saccharomyces c erevisiae.' Journal of 
 proteome research 5.9 (2006): 2339-2347.
 \url{https://doi.org/10.1021/pr060161n}
 }
