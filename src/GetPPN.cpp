@@ -1,22 +1,6 @@
 #include <Rcpp.h>
 using namespace Rcpp;
-//' This function returns sum of minimum peptide/spectra count across AP-MS
-//' runs.
-//' @title GetPPN
-//' 
-//' @param mat A matrix of peptide/spectra count in the format of 
-//' proteins (column) by AP-MS runs (row)
-//' @return A matrix of proteins by proteins indicating sum of minimum 
-//' peptide/spectra count across all AP-MS runs.
-//' @author Qingzhou Zhang, \email{zqzneptune@hotmail.com}
-//' @references Guruharsha, K. G., et al. "A protein complex network of 
-//' Drosophila melanogaster." Cell 147.3 (2011): 690-703.
-//' \url{https://doi.org/10.1016/j.cell.2011.08.047}
-//' @examples
-//' mat <- matrix(c(3, 4, 5, 3, 4, 2), byrow = TRUE, ncol = 2)
-//' GetPPN(mat)
-//' 
-// [[Rcpp::export]]
+// [[Rcpp::export(.GetPPN)]]
 NumericMatrix GetPPN(NumericMatrix mat) {
   int nc = mat.ncol();
   int rstart = 0;

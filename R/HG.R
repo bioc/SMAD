@@ -95,7 +95,7 @@ HG <- function(datInput) {
     g[is.na(g)] <- 0
     rownames(g) <- d$idPrey
     pps <- combn(d$idPrey, 2)
-    PPN <- GetPPN(t(g))
+    PPN <- .GetPPN(t(g))
     CppPPN <- PPN[lower.tri(PPN, diag = FALSE)]
     datPPI <- data.frame(cbind(t(pps[, CppPPN != 0]), 
                                 CppPPN[CppPPN != 0]), stringsAsFactors = FALSE)

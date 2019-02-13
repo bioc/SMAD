@@ -7,13 +7,13 @@
 CompPASS(datInput)
 }
 \arguments{
-\item{datInput}{A dataframe with column names: idRun, idBait, idPrey,
-countPrey. Each row represent one unique protein captured in one pull-down
-experiment}
+\item{datInput}{A dataframe with column names: idRun, idBait, idPrey, 
+countPrey. Each row represent one unique protein captured in one 
+pull-down experiment}
 }
 \value{
-A data frame consists of unique bait-prey pairs with Z-score,
-S-score, D-score and WD-score indicating interacting probabilities.
+A data frame consists of unique bait-prey pairs with 
+Z-score, S-score,D-score and WD-score indicating interacting probabilities.
 }
 \description{
 CompPASS
@@ -24,6 +24,9 @@ human deubiquitinating enzyme interaction landscape
 inspired by Dr. Sowa's online tutorial
 (\url{http://besra.hms.harvard.edu/ipmsmsdbs/cgi-bin/tutorial.cgi}).
 The output includes Z-score, S-score, D-score and WD-score.
+This function also computes entropy and normalized 
+WD-score. The source  code for this function was based on the source code. 
+ \url{https://github.com/dnusinow/cRomppass}
 }
 \examples{
 data(TestDatInput)
@@ -33,6 +36,15 @@ CompPASS(TestDatInput)
 Sowa, Mathew E., et al. "Defining the human deubiquitinating
 enzyme interaction landscape." Cell 138.2 (2009): 389-403.
 \url{https://doi.org/10.1016/j.cell.2009.04.042}
+
+Huttlin, Edward L., et al. "The BioPlex network: a systematic 
+exploration of the human interactome." Cell 162.2 (2015): 425-440. 
+\url{https://doi.org/10.1016/j.cell.2015.06.043}
+
+Huttlin, Edward L., et al. "Architecture of the human 
+interactome defines protein communities and disease networks." 
+Nature 545.7655 (2017): 505. 
+\url{https://www.nature.com/articles/nature22366}
 }
 \author{
 Qingzhou Zhang, \email{zqzneptune@hotmail.com}
