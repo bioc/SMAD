@@ -1,13 +1,15 @@
 Package: SMAD
 Type: Package
 Title: Statistical Modelling of AP-MS Data (SMAD)
-Version: 0.99.7
+Version: 0.99.8
 Authors@R: c(
     person("Qingzhou", "Zhang", , "zqzneptune@hotmail.com", c("aut", "cre")))
 Description: Assigning probability scores to prey proteins captured in 
     affinity purification mass spectrometry (AP-MS) expriments to infer protein-
     protein interactions. The output would facilitate non-specific background
     removal as contaminants are commonly found in AP-MS data.
+Depends: 
+    R (>= 3.6.0)
 Imports: 
     magrittr (>= 1.5), 
     matrixStats,
