@@ -13,5 +13,5 @@
 #' @keywords datasets
 #' @name TestDatInput 
 #' @usage data(TestDatInput)
-#' @format A data frame with 26,441 rows and 5 variables
+#' @format A data frame with 5000 rows and 5 variables
 NULL
