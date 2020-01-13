@@ -1,7 +1,7 @@
 Package: SMAD
 Type: Package
 Title: Statistical Modelling of AP-MS Data (SMAD)
-Version: 1.4.1
+Version: 1.3.1
 Authors@R: c(
     person("Qingzhou", "Zhang", , "zqzneptune@hotmail.com", c("aut", "cre")))
 Description: Assigning probability scores to prey proteins captured in 
