@@ -23,7 +23,7 @@ colnames(TestDataInput)
 |-----|:----:|:----:|:-------:|-------|
 |Unique ID of one AP-MS run|Bait ID|Prey ID|Prey peptide count|Protein sequence length of the prey|
 
-In case of duplcates, a suffix or prefix of e.g. "A", "B" could be added to **idRun** in order to make **"idRun-idBait"** combination unique to each relicate.
+In case of duplcates, a suffix or prefix of e.g. "A", "B" could be added to **idRun** in order to make **"idRun-idBait"** combination unique to each replicate.
 
 ## Run scoring
 
