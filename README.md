@@ -9,7 +9,23 @@ The development version can be installed through github:
  devtools::install_github(repo="zqzneptune/SMAD")
  library(SMAD)
 ```
-## Quick start
+## Input Data
+A demo data.frame was provided as a hint how the input data should strcutured in order to run the scoring functions:
+
+```{r}
+data(TestDatInput)
+colnames(TestDataInput)
+
+[1] "idRun" "idBait" "idPrey" "countPrey" "lenPrey" 
+```
+
+|idRun|idBait|idPrey|countPrey|lenPrey|
+|-----|:----:|:----:|:-------:|-------|
+|Unique ID of one AP-MS run|Bait ID|Prey ID|Prey peptide count|Protein sequence length of the prey|
+
+In case of duplcates, a suffix or prefix of e.g. "A", "B" could be added to **idRun** in order to make **"idRun-idBait"** combination unique to each relicate.
+
+## Run scoring
 
 ### 1. CompPASS
 
@@ -19,35 +35,54 @@ Bayes classifier that learns to distinguish true interacting proteins from
 non-specific background and false positive identifications was included in the 
 compPASS pipline. This function was optimized from the [source code][5].
 
-Prepare input data into the dataframe *datInput* with the following format:
-
-|idRun|idBait|idPrey|countPrey|
-|-----|:----:|:----:|:-------:|
-|Unique ID of one AP-MS run|Bait ID|Prey ID|Prey peptide count|
-
-Then run:
+The input data.frame, *datInput*, should include:**idRun**, **idBait**, **idPrey** and **countPrey**.
 
 ```{r}
-CompPASS(datInput)
+datScore <- CompPASS(datInput)
+```
+
+### 2. DICE
+
+The Dice coefficient is used to score the interaction scores across prey pair-wise combinations, which was proposed by [(Bing Zhang et al., 2008)][9]
+
+The input data.frame, *datInput*, should include:**idRun** and **idPrey**.
+
+```{r}
+datScore <- DICE(datInput)
+```
+
+### 3. Hart
+
+Hart scoring algorithm is based on a hypergeometric distribution error model [(Hart et al., 2007)][6].
+
+The input data.frame, *datInput*, should include:**idRun** and **idPrey**.
+
+```{r}
+datScore <- Hart(datInput)
 ```
 
 
-### 2. HGScore
+### 4. HGScore
 
-HGScore Scoring algorithm based on a hypergeometric distribution error model [(Hart et al., 2007)][6] with incorporation of NSAF [(Zybailov, Boris, et al., 2006)][7]. This algorithm was first introduced to predict the protein complex network of Drosophila melanogaster [(Guruharsha, K. G., et al., 2011)][8]. This scoring algorithm was based on matrix model. Unlike CompPASS, we need protein length for each prey in the additional column.
+HGScore algorithm is based on a hypergeometric distribution error model [(Hart et al., 2007)][6] with incorporation of NSAF [(Zybailov, Boris, et al., 2006)][7]. This algorithm was first introduced to predict the protein complex network of Drosophila melanogaster [(Guruharsha, K. G., et al., 2011)][8]. This scoring algorithm was based on matrix model. 
 
-Prepare input data into the dataframe *datInput* with the following format:
-
-|idRun|idBait|idPrey|countPrey|lenPrey|
-|-----|:----:|:----:|:-------:|:-------:|
-|Unique ID of one AP-MS run|Bait ID|Prey ID|Prey peptide count|Prey protein length|
-
-
-Then run:
+The input data.frame, *datInput*, should include:**idRun**, **idPrey**, **countPrey** and **lenPrey**.
 
 ```{r}
-HG(datInput)
+datScore <- HG(datInput)
 ```
+
+### 5. PE
+PE incorporated both spoke and matrix model as repored in [(Sean R. Collins, et al., 2007)][10].
+
+The input data.frame, *datInput*, should include:**idRun**, **idBait** and **idPrey**.
+
+```{r}
+datScore <- PE(datInput)
+```
+
+
+
 ## License
 
 MIT @ Qingzhou Zhang
@@ -60,3 +95,5 @@ MIT @ Qingzhou Zhang
 [6]: https://doi.org/10.1186/1471-2105-8-236
 [7]: https://doi.org/10.1021/pr060161n
 [8]: https://doi.org/10.1016/j.cell.2011.08.047
+[9]: https://doi.org/10.1093/bioinformatics/btn036
+[10]: https://doi.org/10.1074/mcp.M600381-MCP200
