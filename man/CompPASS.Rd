@@ -30,7 +30,8 @@ WD-score. The source  code for this function was based on the source code.
 }
 \examples{
 data(TestDatInput)
-CompPASS(TestDatInput)
+datScore <- CompPASS(TestDatInput)
+head(datScore)
 }
 \references{
 Sowa, Mathew E., et al. "Defining the human deubiquitinating

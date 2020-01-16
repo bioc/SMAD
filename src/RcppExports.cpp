@@ -5,6 +5,17 @@
 
 using namespace Rcpp;
 
+// GetDICE
+NumericMatrix GetDICE(NumericMatrix mat);
+RcppExport SEXP _SMAD_GetDICE(SEXP matSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type mat(matSEXP);
+    rcpp_result_gen = Rcpp::wrap(GetDICE(mat));
+    return rcpp_result_gen;
+END_RCPP
+}
 // GetPPN
 NumericMatrix GetPPN(NumericMatrix mat);
 RcppExport SEXP _SMAD_GetPPN(SEXP matSEXP) {
@@ -18,6 +29,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_SMAD_GetDICE", (DL_FUNC) &_SMAD_GetDICE, 1},
     {"_SMAD_GetPPN", (DL_FUNC) &_SMAD_GetPPN, 1},
     {NULL, NULL, 0}
 };

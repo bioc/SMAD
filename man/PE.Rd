@@ -21,11 +21,12 @@ and Matrix model.
 }
 \description{
 PE
-Scoring algorithm based on a hypergeometric distribution error model.
+Incorporated both spoke and matrix model.
 }
 \examples{
 data(TestDatInput)
-outputPE <- PE(TestDatInput, 0.37, 1)
+datScore <- PE(TestDatInput, 0.37, 1)
+head(datScore)
 }
 \references{
 Collins, Sean R., et al. "Toward a comprehensive atlas of the 

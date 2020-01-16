@@ -26,7 +26,8 @@ algorithm was based on matrix model.
 }
 \examples{
 data(TestDatInput)
-HG(TestDatInput)
+datScore <- HG(TestDatInput)
+head(datScore)
 }
 \references{
 Guruharsha, K. G., et al. 'A protein complex network of 

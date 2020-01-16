@@ -1,5 +1,5 @@
 #' PE
-#' Scoring algorithm based on a hypergeometric distribution error model.
+#' Incorporated both spoke and matrix model.
 #'
 #' @title PE
 #' @param datInput A dataframe with column names: idRun, idBait, idPrey, 
@@ -34,7 +34,8 @@
 #' @export
 #' @examples
 #' data(TestDatInput)
-#' outputPE <- PE(TestDatInput, 0.37, 1)
+#' datScore <- PE(TestDatInput, 0.37, 1)
+#' head(datScore)
 
 PE <- function(datInput, rBait = 0.37, cntPseudo = 1){
     colInput <-
@@ -160,7 +161,14 @@ PE <- function(datInput, rBait = 0.37, cntPseudo = 1){
         spacePk %>% 
         mutate(`nonBP` = `cntBait` - `cntBP`) %>%
         mutate(`finalS` = `sSum` + `nonBP` * sNoPrey)
-    
+    spokeBP <-
+        finalS[, c("BP", "finalS")]
+    colnames(spokeBP) <-
+        c("BP", "spokeBP")
+    spokePB <-
+        finalS[, c("BP", "finalS")]
+    colnames(spokePB) <-
+        c("PB", "spokePB")
     totPkList <-
         unstack(datInput[, c("idPrey", "idRun")])
     f_1 <- fPrey[, c("idPrey", "f")]
@@ -188,13 +196,14 @@ PE <- function(datInput, rBait = 0.37, cntPseudo = 1){
     
     finalM <-
         unique(pkM[, c("PPI", "finalM")])
-    
+    colnames(finalM) <-
+        c("PPI", "matrixPP")
     peOut <-
         ppsOut %>% 
-        left_join(., finalS[, c("BP", "finalS")], by = c("BP" = "BP")) %>% 
-        left_join(., finalS[, c("BP", "finalS")], by = c("PB" = "BP")) %>% 
+        left_join(., spokeBP, by = c("BP")) %>% 
+        left_join(., spokePB, by = c("PB")) %>% 
         left_join(., finalM, by = "PPI")
     peOut[, "PE"] <-
-        rowSums(peOut[, grepl("final", colnames(peOut))], na.rm = TRUE)
-    return(peOut[, c("PPI", "InteractorA", "InteractorB", "PE")])
+        rowSums(peOut[, c("spokeBP", "spokePB", "matrixPP")], na.rm = TRUE)
+    return(peOut)
 }

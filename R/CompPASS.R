@@ -43,7 +43,8 @@
 #' @export
 #' @examples
 #' data(TestDatInput)
-#' CompPASS(TestDatInput)
+#' datScore <- CompPASS(TestDatInput)
+#' head(datScore)
 CompPASS <- function(datInput){
     colInput <-
         c("idRun", "idBait", "idPrey", "countPrey")

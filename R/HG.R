@@ -46,7 +46,8 @@
 #' @export
 #' @examples
 #' data(TestDatInput)
-#' HG(TestDatInput)
+#' datScore <- HG(TestDatInput)
+#' head(datScore)
 
 
 HG <- function(datInput) {
@@ -82,15 +83,15 @@ HG <- function(datInput) {
     ppiTN <- NULL
     datCnt <- 
         datInput %>% 
-        mutate(NormalSpec = countPrey/lenPrey) %>% 
-        group_by(idRun) %>% 
-        mutate(SumNS = sum(NormalSpec)) %>% 
-        mutate(NSAF = NormalSpec/SumNS) %>% 
-        group_by(idRun) %>% 
-        mutate(NormalNSAF = NSAF/min(NSAF)) %>% 
-        mutate(Tn = as.integer(sqrt(NormalNSAF)))
+        mutate(`NormalSpec` = `countPrey`/`lenPrey`) %>% 
+        group_by(`idRun`) %>% 
+        mutate(`SumNS` = sum(`NormalSpec`)) %>% 
+        mutate(`NSAF` = `NormalSpec`/`SumNS`) %>% 
+        group_by(`idRun`) %>% 
+        mutate(`NormalNSAF` = `NSAF`/min(`NSAF`)) %>% 
+        mutate(`Tn` = as.integer(sqrt(`NormalNSAF`)))
     d <- spread(datCnt[, c("idRun", "idPrey", "Tn")], 
-                idRun, Tn)
+                `idRun`, `Tn`)
     g <- as.matrix(d[, -1])
     g[is.na(g)] <- 0
     rownames(g) <- d$idPrey
@@ -113,7 +114,8 @@ HG <- function(datInput) {
         c("UniprotID", "ppiTN")
     tnProtein <- 
         bind_rows(tnInteractorA, tnInteractorB) %>% 
-        group_by(UniprotID) %>% summarise(minTn = sum(ppiTN))
+        group_by(`UniprotID`) %>% 
+        summarise(minTn = sum(`ppiTN`))
     sumMinTnInteractorA <- 
         tnProtein
     colnames(sumMinTnInteractorA) <- 
@@ -126,8 +128,8 @@ HG <- function(datInput) {
         datPPI %>% 
         left_join(., sumMinTnInteractorA, by = "InteractorA") %>% 
         left_join(., sumMinTnInteractorB, by = "InteractorB") %>% 
-        mutate(NMinTn = sum(tnProtein$minTn)/2) %>% 
-        mutate(HG = -phyper(ppiTN, tnA, NMinTn - tnB, 
-                                tnB, lower.tail = FALSE, log.p = TRUE))
-    return(scorePPI[, c("InteractorA", "InteractorB", "HG")])
+        mutate(`NMinTn` = sum(tnProtein$minTn)/2) %>% 
+        mutate(`HG` = -phyper(`ppiTN`, `tnA`, `NMinTn` - `tnB`, 
+                                `tnB`, lower.tail = FALSE, log.p = TRUE))
+    return(scorePPI)
 }
