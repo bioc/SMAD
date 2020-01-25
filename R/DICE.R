@@ -47,6 +47,7 @@ DICE <- function(datInput) {
     idRun <- NULL
     countPrey <- NULL
     Tn <- NULL
+    s <- NULL
     datCnt <-
         unique(datInput[, c("idRun", "idPrey")])
     datCnt[, "Tn"] <- 1
@@ -68,5 +69,9 @@ DICE <- function(datInput) {
         c("InteractorA", "InteractorB", "DICE")
     datPPI$DICE <-
         as.numeric(datPPI$DICE)
+    s <-
+        apply(datPPI[, c("InteractorA", "InteractorB")], 1, sort)
+    datPPI[, "PPI"] <-
+        paste(s[1, ], s[2, ], sep = "~")
     return(datPPI)
 }

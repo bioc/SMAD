@@ -81,6 +81,7 @@ HG <- function(datInput) {
     NMinTn <- NULL
     HG <- NULL
     ppiTN <- NULL
+    s <- NULL
     datCnt <- 
         datInput %>% 
         mutate(`NormalSpec` = `countPrey`/`lenPrey`) %>% 
@@ -131,5 +132,9 @@ HG <- function(datInput) {
         mutate(`NMinTn` = sum(tnProtein$minTn)/2) %>% 
         mutate(`HG` = -phyper(`ppiTN`, `tnA`, `NMinTn` - `tnB`, 
                                 `tnB`, lower.tail = FALSE, log.p = TRUE))
+    s <- 
+        apply(scorePPI[, c("InteractorA", "InteractorB")], 1, sort)
+    scorePPI[, "PPI"] <-
+        paste(s[1, ], s[2, ], sep = "~")
     return(scorePPI)
 }

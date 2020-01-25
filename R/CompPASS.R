@@ -180,5 +180,9 @@ CompPASS <- function(datInput){
         as.data.frame(output[, c("idBait", "idPrey", "AvePSM",
                                  "scoreZ", "scoreS", "scoreD",
                                     "Entropy", "scoreWD")])
+    s <-
+        apply(output[, c("idBait", "idPrey")], 1, sort)
+    output[, "PPI"] <-
+        paste(s[1, ], s[2, ], sep = "~")
     return(output)
 }
