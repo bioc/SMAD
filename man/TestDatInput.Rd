@@ -4,7 +4,9 @@
 \name{TestDatInput}
 \alias{TestDatInput}
 \title{Test data for SMAD}
-\format{A data frame with 5000 rows and 5 variables}
+\format{
+A data frame with 5000 rows and 5 variables
+}
 \usage{
 data(TestDatInput)
 }

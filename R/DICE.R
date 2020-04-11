@@ -69,9 +69,5 @@ DICE <- function(datInput) {
         c("InteractorA", "InteractorB", "DICE")
     datPPI$DICE <-
         as.numeric(datPPI$DICE)
-    s <-
-        apply(datPPI[, c("InteractorA", "InteractorB")], 1, sort)
-    datPPI[, "PPI"] <-
-        paste(s[1, ], s[2, ], sep = "~")
     return(datPPI)
 }

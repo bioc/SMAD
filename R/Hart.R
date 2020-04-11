@@ -26,6 +26,7 @@
 #' @importFrom magrittr %>%
 #' @importFrom utils combn
 #' @importFrom stats phyper
+#' @importFrom RcppAlgos comboGeneral
 #' @useDynLib SMAD
 #' @exportPattern '^[[:alpha:]]+'
 #' @export
@@ -84,11 +85,11 @@ Hart <- function(datInput) {
     listPPI <-
         lapply(listCnt, function(prt){
             if(length(prt) > 1){
+                sPrt <-
+                    sort(prt)
                 ps <-
-                    combn(prt, 2)
-                s <-
-                    apply(ps, 2, sort)
-                return(paste(s[1, ], s[2, ], sep = "~"))
+                    comboGeneral(sPrt, 2)
+                return(paste(ps[, 1], ps[, 2], sep = "~"))
             }else{
                 return(NA)
             }

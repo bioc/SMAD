@@ -29,6 +29,7 @@
 #' @importFrom BiocParallel bplapply
 #' @importFrom BiocParallel MulticoreParam
 #' @importFrom utils unstack
+#' @importFrom RcppAlgos comboGeneral
 #' @useDynLib SMAD
 #' @exportPattern '^[[:alpha:]]+'
 #' @export
@@ -51,17 +52,17 @@ PE <- function(datInput, rBait = 0.37, cntPseudo = 1){
                     colnames(datInput)[match(colInput, colnames(datInput))])
         stop("Input data missing: ", paste(missingCol, collapse = ", "))
     }
-    .getPPI <- function(prts){
-        if(length(prts) < 2){
-            return(NA)
-        }else{
-            pps <-
-                combn(prts, 2)
-            s <-
-                apply(pps, 2, sort)
-            return(paste(s[1, ], s[2, ], sep = "~"))
-        }
-    }
+    # .getPPI <- function(prts){
+    #     if(length(prts) < 2){
+    #         return(NA)
+    #     }else{
+    #         pps <-
+    #             combn(prts, 2)
+    #         s <-
+    #             apply(pps, 2, sort)
+    #         return(paste(s[1, ], s[2, ], sep = "~"))
+    #     }
+    # }
     . <- NULL
     BP <- NULL
     Freq <- NULL
@@ -89,7 +90,18 @@ PE <- function(datInput, rBait = 0.37, cntPseudo = 1){
     pkPrys <-
         unstack(datInput[, c("idPrey", "idRun")])
     pkPPS <-
-        bplapply(pkPrys, FUN = .getPPI, BPPARAM = MulticoreParam(workers = 8))
+        lapply(pkPrys, function(prts){
+            if(length(prts) < 2){
+                return(NA)
+            }else{
+                sPrts <-
+                    sort(prts)
+                pps <-
+                    comboGeneral(sPrts, 2)
+                return(paste(pps[, 1], pps[, 2], sep = "~"))
+            }
+        })
+        # bplapply(pkPrys, FUN = .getPPI, BPPARAM = MulticoreParam(workers = 8))
     
     pkPP <-
         unique(unlist(pkPPS))

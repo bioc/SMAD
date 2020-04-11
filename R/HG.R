@@ -39,6 +39,7 @@
 #' @importFrom dplyr bind_rows
 #' @importFrom stats setNames
 #' @importFrom stats phyper
+#' @importFrom RcppAlgos comboGeneral
 #' @import Rcpp
 #' @importFrom Rcpp evalCpp
 #' @useDynLib SMAD
@@ -64,8 +65,6 @@ HG <- function(datInput) {
                     colnames(datInput)[match(colInput, colnames(datInput))])
         stop("Input data missing: ", paste(missingCol, collapse = ", "))
     }
-    
-    
     . <- NULL
     idRun <- NULL
     countPrey <- NULL
@@ -82,6 +81,8 @@ HG <- function(datInput) {
     HG <- NULL
     ppiTN <- NULL
     s <- NULL
+    InteractorA <- NULL
+    InteractorB <- NULL
     datCnt <- 
         datInput %>% 
         mutate(`NormalSpec` = `countPrey`/`lenPrey`) %>% 
@@ -96,10 +97,11 @@ HG <- function(datInput) {
     g <- as.matrix(d[, -1])
     g[is.na(g)] <- 0
     rownames(g) <- d$idPrey
-    pps <- combn(d$idPrey, 2)
+    pps <- 
+        comboGeneral(d$idPrey, 2)
     PPN <- .GetPPN(t(g))
     CppPPN <- PPN[lower.tri(PPN, diag = FALSE)]
-    datPPI <- data.frame(cbind(t(pps[, CppPPN != 0]), 
+    datPPI <- data.frame(cbind(pps[CppPPN != 0, ], 
                                 CppPPN[CppPPN != 0]), stringsAsFactors = FALSE)
     colnames(datPPI) <- 
         c("InteractorA", "InteractorB", "ppiTN")
@@ -129,12 +131,9 @@ HG <- function(datInput) {
         datPPI %>% 
         left_join(., sumMinTnInteractorA, by = "InteractorA") %>% 
         left_join(., sumMinTnInteractorB, by = "InteractorB") %>% 
+        mutate(`PPI` = paste(`InteractorA`, `InteractorB`, sep = "~")) %>% 
         mutate(`NMinTn` = sum(tnProtein$minTn)/2) %>% 
         mutate(`HG` = -phyper(`ppiTN`, `tnA`, `NMinTn` - `tnB`, 
                                 `tnB`, lower.tail = FALSE, log.p = TRUE))
-    s <- 
-        apply(scorePPI[, c("InteractorA", "InteractorB")], 1, sort)
-    scorePPI[, "PPI"] <-
-        paste(s[1, ], s[2, ], sep = "~")
     return(scorePPI)
 }
