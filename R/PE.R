@@ -25,7 +25,6 @@
 #' @importFrom dplyr filter
 #' @importFrom dplyr n
 #' @importFrom magrittr %>%
-#' @importFrom utils combn
 #' @importFrom BiocParallel bplapply
 #' @importFrom BiocParallel MulticoreParam
 #' @importFrom utils unstack

@@ -35,7 +35,6 @@
 #' @importFrom dplyr n
 #' @importFrom tidyr spread
 #' @importFrom magrittr %>%
-#' @importFrom utils combn
 #' @importFrom dplyr bind_rows
 #' @importFrom stats setNames
 #' @importFrom stats phyper
@@ -96,10 +95,11 @@ HG <- function(datInput) {
                 `idRun`, `Tn`)
     g <- as.matrix(d[, -1])
     g[is.na(g)] <- 0
-    rownames(g) <- d$idPrey
+    g <- t(g)
+    colnames(g) <- d$idPrey
     pps <- 
-        comboGeneral(d$idPrey, 2)
-    PPN <- .GetPPN(t(g))
+        comboGeneral(colnames(g), 2)
+    PPN <- .GetPPN(g)
     CppPPN <- PPN[lower.tri(PPN, diag = FALSE)]
     datPPI <- data.frame(cbind(pps[CppPPN != 0, ], 
                                 CppPPN[CppPPN != 0]), stringsAsFactors = FALSE)

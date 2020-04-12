@@ -24,7 +24,6 @@
 #' @importFrom tidyr separate
 #' @importFrom tidyr spread
 #' @importFrom magrittr %>%
-#' @importFrom utils combn
 #' @importFrom stats phyper
 #' @importFrom RcppAlgos comboGeneral
 #' @useDynLib SMAD
@@ -85,7 +84,7 @@ Hart <- function(datInput) {
     listPPI <-
         lapply(listCnt, function(prt){
             if(length(prt) > 1){
-                sPrt <-
+                sPrt <- 
                     sort(prt)
                 ps <-
                     comboGeneral(sPrt, 2)
@@ -93,7 +92,6 @@ Hart <- function(datInput) {
             }else{
                 return(NA)
             }
-            
         })
     datPPI <-
         as.data.frame(table(unlist(listPPI)), stringsAsFactors = FALSE)

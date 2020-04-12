@@ -17,7 +17,7 @@
 
 #' @importFrom tidyr spread
 #' @importFrom magrittr %>%
-#' @importFrom utils combn
+#' @importFrom RcppAlgos comboGeneral
 #' @import Rcpp
 #' @importFrom Rcpp evalCpp
 #' @useDynLib SMAD
@@ -51,7 +51,7 @@ DICE <- function(datInput) {
     datCnt <-
         unique(datInput[, c("idRun", "idPrey")])
     datCnt[, "Tn"] <- 1
-    d <- spread(datCnt[, c("idRun", "idPrey", "Tn")], 
+    d <- spread(datCnt[, c("idRun", "idPrey", "Tn")], # idPrey sorted already
                 `idRun`, `Tn`)
     g <- as.matrix(d[, -1])
     g[is.na(g)] <- 0
@@ -59,15 +59,17 @@ DICE <- function(datInput) {
     datDice <-
         .GetDICE(t(g))
     pps <- 
-        combn(d$idPrey, 2)
+        comboGeneral(d$idPrey, 2)
     ppDice <- 
         datDice[lower.tri(datDice, diag = FALSE)]
     datPPI <- 
-        data.frame(cbind(t(pps), ppDice), 
+        data.frame(cbind(pps, ppDice), 
                    stringsAsFactors = FALSE)
     colnames(datPPI) <-
         c("InteractorA", "InteractorB", "DICE")
     datPPI$DICE <-
         as.numeric(datPPI$DICE)
+    datPPI[, "PPI"] <-
+        paste(datPPI$InteractorA, datPPI$InteractorB, sep = "~")
     return(datPPI)
 }
