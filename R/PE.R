@@ -25,8 +25,6 @@
 #' @importFrom dplyr filter
 #' @importFrom dplyr n
 #' @importFrom magrittr %>%
-#' @importFrom BiocParallel bplapply
-#' @importFrom BiocParallel MulticoreParam
 #' @importFrom utils unstack
 #' @importFrom RcppAlgos comboGeneral
 #' @useDynLib SMAD
