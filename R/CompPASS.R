@@ -166,14 +166,13 @@ CompPASS <- function(datInput){
         mutate(`WD_raw` = sqrt(`AvePSM` * (`WD_inner`^`p`)))
     
     # Weighted WD score
+    i = !(is.na(output$WD_raw) | is.nan(output$WD_raw))
     WD_raw <-
-        output$WD_raw[!is.na(output$WD_raw)]
-    WD_raw <-
-        WD_raw[!is.nan(output$WD_raw)]
+        output$WD_raw[i]
     WD_raw.factor <-
         unname(quantile(WD_raw, 0.98)[1])
     
-    output[, "scoreWD"] <-
+    output[i, "scoreWD"] <-
         WD_raw / WD_raw.factor
     
     output <-
