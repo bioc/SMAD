@@ -1,7 +1,7 @@
 Type: Package
 Package: SMAD
 Title: Statistical Modelling of AP-MS Data (SMAD)
-Version: 1.27.11
+Version: 1.28.0
 Authors@R: 
     person("Qingzhou", "Zhang", , "zqzneptune@hotmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-9540-2624"))
